@@ -1,0 +1,49 @@
+{
+  "name": "ts-web3-boilerplate",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
+    "lint": "npm run lint:js",
+    "lintfix": "npm run lint:js -- --fix"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "bignumber.js": "^9.0.2",
+    "bootstrap": "^4.6.1",
+    "bootstrap-vue": "^2.21.2",
+    "core-js": "^3.19.3",
+    "nuxt": "^2.15.8",
+    "nuxt-i18n": "^6.28.1",
+    "vee-validate": "^3.4.14",
+    "vue": "^2.6.14",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.1.2",
+    "vuex": "^3.6.2",
+    "vuex-module-decorators": "^2.0.0",
+    "vuex-class": "^0.3.2",
+    "vue-server-renderer": "^2.6.14",
+    "vue-template-compiler": "^2.6.14",
+    "web3": "^1.6.1",
+    "webpack": "^4.46.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.16.3",
+    "@nuxt/types": "^2.15.8",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/eslint-config-typescript": "^8.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "css-loader": "^5.2.2",
+    "eslint": "^8.4.1",
+    "eslint-plugin-nuxt": "^3.1.0",
+    "eslint-plugin-vue": "^8.2.0",
+    "sass": "^1.48.0",
+    "sass-loader": "^10.1.1",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.2.0"
+  }
+}
