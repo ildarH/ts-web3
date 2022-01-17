@@ -28,5 +28,67 @@
     "required": "The {_field_} is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values"
+  },
+  "header": {
+    "languageSelector": {
+      "eng": "Eng",
+      "ru": "Ru"
+    },
+    "connectWallet": "Connect wallet"
+  },
+  "warning": {
+    "title": "App network doesn’t match to network selected in wallet!",
+    "button": "Change Network"
+  },
+  "balanceCard": {
+    "title": "Your balance",
+    "input": {
+      "name": "Token address",
+      "placeholder": "Input token address"
+    }
+  },
+  "tokensSelector": {
+    "button": "Add token"
+  },
+  "transferCard": {
+    "title": "Transfer",
+    "inputs": {
+      "amount": {
+        "label": "Amount",
+        "placeholder": "Enter amount"
+      },
+      "recipient": {
+        "label": "Address (Recipient)",
+        "placeholder": "Enter wallet address"
+      }
+    },
+    "buttons": {
+      "getAllowance": "Get allowance",
+      "approve": "Approve",
+      "Transfer": "Transfer"
+    }
+  },
+  "transactionsTable": {
+    "transactionTypes": {
+      "transfer": "Transfer",
+      "approve": "Approve"
+    },
+    "labels": {
+      "from": "From",
+      "to": "To",
+      "amount": "Amount"
+    },
+    "showMore": "Show more transactions"
+  },
+  "modals": {
+    "chooseToken": {
+      "title": "Choose token",
+      "placeholder": "Search"
+    },
+    "addToken": {
+      "title": "Enter token address",
+      "placeholder": "address",
+      "buttons": "Add token"
+    }
   }
 }

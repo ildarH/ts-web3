@@ -3,6 +3,7 @@ import localeEn from './locales/en.json'
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+  ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -26,6 +27,10 @@ export default {
     '~/assets/scss/main.scss'
   ],
 
+  styleResources: {
+    scss: ['~/assets/scss/mixins/index.scss', '~/assets/scss/_variables.scss']
+  },
+
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/vee-validate.ts' }
@@ -37,15 +42,18 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build'
+    '@nuxt/typescript-build',
+    '@nuxtjs/color-mode',
+    '@nuxtjs/style-resources',
+    '@nuxt/postcss8',
+    '@nuxtjs/tailwindcss'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/i18n'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -58,7 +66,20 @@ export default {
   build: {
     transpile: [
       'vee-validate/dist/rules'
-    ]
+    ],
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {}
+      }
+    }
+  },
+  tailwindcss: {
+    cssPath: '~/assets/scss/tailwind.css',
+    configPath: 'tailwind.config.js',
+    exposeConfig: false,
+    config: {},
+    injectPosition: 0
   },
   i18n: {
     locales: ['en'],
@@ -76,6 +97,8 @@ export default {
     }
   },
   env: {
-    IS_MAINNET: process.env.IS_MAINNET === 'true'
+    IS_MAINNET: process.env.IS_MAINNET === 'true',
+    DEFAULT_CHAIN_ID_TESTNET: process.env.DEFAULT_CHAIN_ID_TESTNET,
+    DEFAULT_CHAIN_ID_MAINNET: process.env.DEFAULT_CHAIN_ID_MAINNET
   }
 }

@@ -1,2 +1,13 @@
 @import './_reset.css';
+@import './variables';
 @import './mixins';
+@import './fonts';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: $body-bg;
+}
