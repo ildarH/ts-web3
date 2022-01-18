@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Web3 from 'web3'
 
 import {
   ValidationProvider,
@@ -27,3 +28,13 @@ export default ({ app }: { app: any }): void => {
     }
   })
 }
+
+extend('validAddress', {
+  validate: (value) => {
+    try {
+      return Web3.utils.isAddress(value)
+    } catch {
+      return false
+    }
+  }
+})

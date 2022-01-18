@@ -31,10 +31,7 @@
           class="input-group-prepend"
         >
           <span class="input-group-text">
-            <slot name="prepend">
-              <img :src="GetImgUrl(`${prependIcon}.svg`)" :alt="name">
-              <!--              <i :class="prependIcon" />-->
-            </slot>
+            <slot name="prepend" />
           </span>
         </div>
         <slot v-bind="slotData">
@@ -53,10 +50,7 @@
           class="input-group-append"
         >
           <span class="input-group-text">
-            <slot name="append">
-              <img :src="GetImgUrl(`${appendIcon}.svg`)" :alt="name">
-              <!--              <i :class="appendIcon" />-->
-            </slot>
+            <slot name="append" />
           </span>
         </div>
         <slot name="infoBlock" />
@@ -98,6 +92,8 @@ export default class AppInput extends Vue {
   @Prop({ type: String, default: '' }) readonly successMessage!: string
   @Prop({ type: String, default: '' }) readonly labelClasses!: string
   @Prop({ type: String, default: '' }) readonly inputClasses!: string
+  @Prop({ type: String, default: '' }) readonly prependIconClasses!: string
+  @Prop({ type: String, default: '' }) readonly appendIconClasses!: string
   @Prop({ type: String, default: '' }) readonly inputGroupClasses!: string
   @Prop({ type: String, default: '' }) readonly appendIcon!: string
   @Prop({ type: String, default: '' }) readonly prependIcon!: string
@@ -106,6 +102,7 @@ export default class AppInput extends Vue {
   @Prop({ type: String, default: 'text' }) readonly type!: string
 
   focused = false
+  inputValue: number | string | null = ''
 
   get listeners (): Record<any, any> {
     return {
@@ -137,6 +134,7 @@ export default class AppInput extends Vue {
 
   updateValue (evt: Event): void {
     const { value } = (evt.target as HTMLInputElement)
+    this.inputValue = value
     this.$emit('input', value)
   }
 
@@ -152,6 +150,15 @@ export default class AppInput extends Vue {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .input-group-append {
+    position: relative;
+  }
+  .invalid-feedback {
+    font-size: 10px;
+    margin-left: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 15px;
+  }
 </style>

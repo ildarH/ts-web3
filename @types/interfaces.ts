@@ -1,3 +1,5 @@
+import { NetworkName } from '~/@types/enums'
+
 export interface IResponse {
   ok: boolean,
   result?: any,
@@ -16,10 +18,20 @@ export interface IAppState {
 
 export interface IWeb3State {
   userAddress: string,
-  isConnected: boolean
+  isConnected: boolean,
+  chainId: number,
+  isDefaultChainId: boolean,
+  networkName: string | NetworkName
 }
 
 export interface IRootState {
   app: IAppState,
   web3: IWeb3State
+}
+
+export interface IHistory {
+  type: string,
+  from: string,
+  to: string,
+  amount: string
 }

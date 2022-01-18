@@ -10,7 +10,7 @@
           </span>
         </div>
         <div class="warning__button">
-          <button class="border-2 font-semibold border-red-500 hover:border-red-800 rounded-xl p-2 button" @click="switchNetwork">
+          <button class="border-2 font-semibold border-red-500 hover:border-red-800 rounded-xl p-2 button" @click="switchNetwork" :disabled="!isConnected && !isDefaultChainId">
             {{ $t('warning.button') }}
           </button>
         </div>
@@ -36,6 +36,14 @@ export default class Warning extends Vue {
 
   get theme (): string {
     return AppModule.theme
+  }
+
+  get isConnected (): boolean {
+    return Web3Module.isConnected
+  }
+
+  get isDefaultChainId (): boolean {
+    return Web3Module.isDefaultChainId
   }
 
   private async switchNetwork (): Promise<void> {

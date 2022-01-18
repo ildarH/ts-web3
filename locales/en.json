@@ -27,7 +27,8 @@
     "required_if": "The {_field_} field is required",
     "required": "The {_field_} is required",
     "size": "The {_field_} field size must be less than {size}KB",
-    "decimal": "The {_field_} field must contain only decimal values"
+    "decimal": "The {_field_} field must contain only decimal values",
+    "validAddress": "The {_field_} must be correct address"
   },
   "header": {
     "languageSelector": {
@@ -65,10 +66,11 @@
     "buttons": {
       "getAllowance": "Get allowance",
       "approve": "Approve",
-      "Transfer": "Transfer"
+      "transfer": "Transfer"
     }
   },
   "transactionsTable": {
+    "title": "Transactions",
     "transactionTypes": {
       "transfer": "Transfer",
       "approve": "Approve"
@@ -89,6 +91,14 @@
       "title": "Enter token address",
       "placeholder": "address",
       "buttons": "Add token"
+    }
+  },
+  "notification": {
+    "header": {
+      "success": "Success"
+    },
+    "content": {
+      "copy": "copied"
     }
   }
 }

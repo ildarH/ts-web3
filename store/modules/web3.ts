@@ -2,7 +2,8 @@ import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-dec
 import { MutationTypes } from '~/@types/mutation-types'
 import { IResponse, IWeb3State } from '~/@types/interfaces'
 import { store } from '~/store'
-import { initWallet, requestSwitchNetwork } from '~/utils/web3'
+import { initWallet, requestCheckChainId, requestSwitchNetwork } from '~/utils/web3'
+import { NetworkName } from '~/@types/enums'
 
 const IS_MAINNET: boolean = !!(process.env.IS_MAINNET)
 const DEFAULT_CHAIN_ID: number = IS_MAINNET ? +(process.env.DEFAULT_CHAIN_ID_MAINNET || 0) : +(process.env.DEFAULT_CHAIN_ID_TESTNET || 0)
@@ -18,6 +19,7 @@ class Web3 extends VuexModule implements IWeb3State {
   public isConnected: boolean = false
   public chainId: number = 0
   public isDefaultChainId = false
+  public networkName: NetworkName | string = ''
 
   @Mutation
   public [MutationTypes.WEB3_SET_IS_CONNECTED] (isConnected: boolean): void {
@@ -39,6 +41,11 @@ class Web3 extends VuexModule implements IWeb3State {
     this.isDefaultChainId = isDefaultChainId
   }
 
+  @Mutation
+  public [MutationTypes.WEB3_SET_NETWORK_NAME] (chainId: number): void {
+    this.networkName = NetworkName[chainId]
+  }
+
   @Action
   public async ConnectWallet (): Promise<void> {
     const connectRequest: IResponse = await initWallet()
@@ -47,17 +54,16 @@ class Web3 extends VuexModule implements IWeb3State {
       this.context.commit(MutationTypes.WEB3_SET_CHAIN_ID, connectRequest.result.chainId)
       this.context.commit(MutationTypes.WEB3_SET_IS_CONNECTED, true)
       this.context.commit(MutationTypes.WEB3_SET_IS_DEFAULT_CHAIN_ID, (connectRequest.result.chainId === DEFAULT_CHAIN_ID))
+      this.context.commit(MutationTypes.WEB3_SET_NETWORK_NAME, connectRequest.result.chainId)
     } else {
-      this.context.commit(MutationTypes.WEB3_SET_USER_ADDRESS, '')
-      this.context.commit(MutationTypes.WEB3_SET_CHAIN_ID, 0)
-      this.context.commit(MutationTypes.WEB3_SET_IS_CONNECTED, false)
-      this.context.commit(MutationTypes.WEB3_SET_IS_DEFAULT_CHAIN_ID, false)
+      await this.context.dispatch('DisconnectWallet')
     }
   }
 
   @Action
-  public checkChainId (): void {
-    this.context.commit(MutationTypes.WEB3_SET_IS_DEFAULT_CHAIN_ID, (this.chainId === DEFAULT_CHAIN_ID))
+  public async CheckChainId (): Promise<void> {
+    const isDefaultChainId = await requestCheckChainId()
+    this.context.commit(MutationTypes.WEB3_SET_IS_DEFAULT_CHAIN_ID, (isDefaultChainId.ok))
   }
 
   @Action
@@ -65,14 +71,17 @@ class Web3 extends VuexModule implements IWeb3State {
     this.context.commit(MutationTypes.WEB3_SET_USER_ADDRESS, '')
     this.context.commit(MutationTypes.WEB3_SET_CHAIN_ID, 0)
     this.context.commit(MutationTypes.WEB3_SET_IS_CONNECTED, false)
+    this.context.commit(MutationTypes.WEB3_SET_IS_DEFAULT_CHAIN_ID, false)
   }
 
   @Action
   public async SwitchNetwork (): Promise<void> {
     const defaultChainId: number = +(process.env.DEFAULT_CHAIN_ID || 4)
+    console.log('requestSwitch defaultChainId: ', defaultChainId)
     const requestSwitch: IResponse = await requestSwitchNetwork(defaultChainId)
     if (requestSwitch.ok) {
-      this.context.commit(MutationTypes.WEB3_SET_CHAIN_ID, defaultChainId)
+      console.log('requestSwitch.ok')
+      await this.context.dispatch('ConnectWallet')
     } else {
       this.DisconnectWallet()
     }

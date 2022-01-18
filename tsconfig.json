@@ -28,7 +28,9 @@
       "@nuxtjs/axios",
       "@types/node",
       "nuxt-i18n",
-      "@nuxtjs/color-mode"
+      "@nuxtjs/color-mode",
+      "nuxt-clipboard",
+      "vt-notifications"
     ]
   },
   "exclude": [

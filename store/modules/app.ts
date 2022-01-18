@@ -1,6 +1,5 @@
 import { VuexModule, getModule, Module, Mutation, Action } from 'vuex-module-decorators'
 import { MutationTypes } from '~/@types/mutation-types'
-import { ActionTypes } from '~/@types/action-types'
 import { IAppState } from '~/@types/interfaces'
 import { store } from '@/store'
 
@@ -23,12 +22,12 @@ class App extends VuexModule implements IAppState {
   }
 
   @Action
-  public [ActionTypes.MAIN_APPLY_DARK_THEME] (): void {
+  public ApplyDarkTheme (): void {
     this.context.commit(MutationTypes.MAIN_SET_THEME, 'dark')
   }
 
   @Action
-  public [ActionTypes.MAIN_APPLY_LIGHT_THEME] (): void {
+  public ApplyLightTheme (): void {
     this.context.commit(MutationTypes.MAIN_SET_THEME, 'light')
   }
 }

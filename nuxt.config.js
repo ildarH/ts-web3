@@ -53,7 +53,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    'nuxt-clipboard'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -96,6 +97,11 @@ export default {
       alwaysRedirect: true
     }
   },
+
+  clipboard: {
+    autoSetContainer: true
+  },
+
   env: {
     IS_MAINNET: process.env.IS_MAINNET === 'true',
     DEFAULT_CHAIN_ID_TESTNET: process.env.DEFAULT_CHAIN_ID_TESTNET,
