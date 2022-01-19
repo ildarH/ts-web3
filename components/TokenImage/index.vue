@@ -5,11 +5,11 @@
       class="token__image"
     >
       <img
-        :src="trustWalletLink"
-        :class="[imageSize, border]"
+        :src="require(trustWalletLink)"
+        class="rounded-full w-8"
         :alt="tokenName"
-        :width="size === 'small' ? 30 : 50"
-        :height="size === 'small' ? 30 : 50"
+        :width="size === 'small' ? 32 : 50"
+        :height="size === 'small' ? 32 : 50"
         @error="handleError()"
       >
     </div>
@@ -27,8 +27,8 @@ export default class TokenImage extends Vue {
  @Prop({ type: Boolean, default: true }) readonly empty!: boolean
  @Prop({ type: String, default: 'small' }) readonly size!: string
 
- baseLink = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains' as string
- link = '' as string
+ baseLink = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains'
+ link = ''
  isErrorExist = false
 
  get trustWalletLink (): string {
@@ -40,7 +40,7 @@ export default class TokenImage extends Vue {
      : `${this.baseLink}/${networkType}/assets/${convertedAddress}/logo.png`
  }
 
- handleError ():void {
+ handleError (): void {
    this.isErrorExist = true
  }
 }

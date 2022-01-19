@@ -30,7 +30,8 @@
     "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^2.0.0",
     "web3": "^1.6.1",
-    "webpack": "^4.46.0"
+    "webpack": "^4.46.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",

@@ -1,7 +1,8 @@
 <template>
-  <div class="tokenCard bg-zinc-300 h-24 w-44">
+  <div class="tokenCard bg-zinc-300 h-24 w-44 rounded-xl">
     <div class="tokenCard__header">
       <token-image :token-address="tokenAddress" :token-name="symbol" />
+      <h4>{{ symbol }}</h4>
     </div>
   </div>
 </template>

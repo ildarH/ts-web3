@@ -2,7 +2,7 @@
   <div class="tokenSelect-wrapper">
     <div class="container">
       <div class="tokenSelect flex direction-row">
-        <TokenCard v-for="item in 6" :key="item" />
+        <TokenCard v-for="item in 6" :key="item" class="mr-2" />
       </div>
     </div>
   </div>
