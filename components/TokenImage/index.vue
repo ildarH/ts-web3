@@ -5,8 +5,8 @@
       class="token__image"
     >
       <img
-        :src="require(trustWalletLink)"
-        class="rounded-full w-8"
+        :src="trustWalletLink"
+        class="rounded-full w-10 h-10"
         :alt="tokenName"
         :width="size === 'small' ? 32 : 50"
         :height="size === 'small' ? 32 : 50"
@@ -32,11 +32,11 @@ export default class TokenImage extends Vue {
  isErrorExist = false
 
  get trustWalletLink (): string {
-   const networkType = 'etherium'
+   const networkType = 'ethereum'
    const isValidAddress = Web3.utils.isAddress(this.tokenAddress)
    const convertedAddress = isValidAddress ? Web3.utils.toChecksumAddress(this.tokenAddress) : ''
    return this.isErrorExist
-     ? '~/assets/img/currency/empty-token.png'
+     ? require('@/assets/img/currency/empty-token.png')
      : `${this.baseLink}/${networkType}/assets/${convertedAddress}/logo.png`
  }
 

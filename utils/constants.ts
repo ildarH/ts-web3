@@ -1,5 +1,17 @@
+import { ITokensMap } from '~/@types/interfaces'
+
 export enum NetworkName {
   none = 0,
-  mainnet = 1,
+  ethereum = 1,
   rinkeby = 4
+}
+
+export const TokensMap: ITokensMap = {
+  '0x4b107a23361770534bd1839171bbf4b0eb56485c': '0x0000000000085d4780B73119b644AE5ecd22b376',
+  '0xba82ed95c37a4610c110224f5060b1e4c7359c72': '0x001F0aA5dA15585e5b2305DbaB2bac425ea71007',
+  '0xc897337e3af5d7f3ff7c244081f3ac7f80154210': '0x01139476be434EDf3A5041748d458c85e85B3313',
+  '0x59c106284a67515ede58b7524d3edd06c8d8479f': '0x032aE2bd448904E0d468167DC25B4C35d3d72a36',
+  '0x032c94d9cbc7bc278d76ccd5c6018c9ce309ea44': '0x048930eec73c91B44b0844aEACdEBADC2F2b6efb',
+  '0x8cc87a44fb8a9e6f96865f5cb69964e369680ddb': '0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd',
+  '0x0c6700c2cef19e4e9bc373f3d5b22cec5dcac9d9': '0x0836e2ed69ab94eD95b08e17165A53E91A378fdF'
 }

@@ -24,11 +24,22 @@ export interface IToken extends InferType<typeof tokenSchema> {}
 
 const balanceSchema = yup.object({
   token: tokenSchema,
-  amount: yup.string(),
-  allowance: yup.string()
+  balance: yup.string()
 })
 
 export interface IBalance extends InferType<typeof balanceSchema> {}
+
+export const ERC20TokenBalanceSchema = yup.object({
+  token_address: yup.string().defined(),
+  name: yup.string().defined(),
+  symbol: yup.string().defined(),
+  logo: yup.string().nullable(true),
+  thumbnail: yup.string().nullable(true),
+  decimals: yup.string().defined(),
+  balance: yup.string().defined()
+})
+
+export interface IERC20TokenBalance extends InferType<typeof ERC20TokenBalanceSchema> {}
 
 const transactionsSchema = yup.object({
   type: yup.string().defined(),

@@ -105,6 +105,8 @@ export default {
   env: {
     IS_MAINNET: process.env.IS_MAINNET === 'true',
     DEFAULT_CHAIN_ID_TESTNET: process.env.DEFAULT_CHAIN_ID_TESTNET,
-    DEFAULT_CHAIN_ID_MAINNET: process.env.DEFAULT_CHAIN_ID_MAINNET
+    DEFAULT_CHAIN_ID_MAINNET: process.env.DEFAULT_CHAIN_ID_MAINNET,
+    MORALIS_SERVER: process.env.MORALIS_SERVER,
+    MORALIS_API_KEY: process.env.MORALIS_API_KEY
   }
 }

@@ -7,7 +7,7 @@
             {{ $t('balanceCard.title') }}
           </div>
           <div class="balance__value font-bold text-4xl mb-1">
-            1232323
+            {{ balance.toLocaleString() + ' ' + symbol }}
           </div>
           <div class="balance__input">
             <AppInput
@@ -31,9 +31,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import AppInput from '~/components/AppInput/index.vue'
 import GetImgUrl from '~/plugins/main'
+import { IBalance } from '~/@types/interfaces'
 
 @Component({
   components: {
@@ -43,10 +44,25 @@ import GetImgUrl from '~/plugins/main'
 })
 export default class Balance extends Vue {
   @Prop({ type: String, default: '' }) readonly propValue!: string
-  value: number | string = ''
+  @Prop({ type: Object, default: () => {} }) readonly token!: IBalance
+
+  isTokenSelected: boolean = false
+  value: string = ''
+  balance: number = 0
+  symbol: string = ''
+
+  @Watch('token')
+  tokenSelected (newVal: IBalance | null): void {
+    if (newVal) {
+      this.isTokenSelected = true
+      this.value = newVal.token.address
+      this.balance = +parseFloat(newVal.balance!).toFixed()
+      this.symbol = newVal.token.symbol
+    }
+  }
+
   async copyText (): Promise<void> {
     try {
-      console.log('this: ', this)
       await this.$copyText(this.value)
     } catch (e) {
       console.error(e)

@@ -2,15 +2,22 @@
   <main>
     <BaseHeader />
     <Warning v-if="!isDefaultChainId" />
-    <Balance v-if="isConnected && isDefaultChainId" />
-    <TokenSelect v-if="isConnected && isDefaultChainId" />
+    <Balance
+      v-if="isConnected && isDefaultChainId"
+      :token="selectedCard"
+    />
+    <TokenSelect
+      v-if="isConnected && isDefaultChainId"
+      :is-tokens-loading="isTokensLoading"
+      @onSelect="selectCard"
+    />
     <BaseForm v-if="isConnected && isDefaultChainId" />
     <Transactions v-if="isConnected && isDefaultChainId" />
   </main>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import BaseHeader from '~/components/BaseHeader/index.vue'
 import Warning from '~/components/Warning/index.vue'
 import Balance from '~/components/Balance/index.vue'
@@ -18,6 +25,8 @@ import TokenSelect from '~/components/TokenSelect/index.vue'
 import BaseForm from '~/components/BaseForm/index.vue'
 import Transactions from '~/components/Transactions/index.vue'
 import { Web3Module } from '~/store/modules/web3'
+import { TokensModule } from '~/store/modules/tokens'
+import { IBalance } from '~/@types/interfaces'
 
 const { ethereum } : { ethereum: any} = window
 
@@ -32,6 +41,9 @@ const { ethereum } : { ethereum: any} = window
   }
 })
 export default class Index extends Vue {
+  isTokensLoading = false
+  selectedCard: IBalance | null = null
+
   get isConnected (): boolean {
     return Web3Module.isConnected
   }
@@ -72,6 +84,19 @@ export default class Index extends Vue {
 
   handleConnected (): void {
     Web3Module.CheckChainId()
+  }
+
+  selectCard (index: any): void {
+    this.selectedCard = TokensModule.tokens[index]
+  }
+
+  @Watch('isConnected')
+  async connectionChanged (newVal: boolean): Promise<void> {
+    if (newVal) {
+      this.isTokensLoading = true
+      await TokensModule.GetTokenData()
+      this.isTokensLoading = false
+    }
   }
 }
 </script>
