@@ -63,15 +63,17 @@
           {{ successMessage }}
         </div>
       </slot>
-      <slot name="error">
-        <div
-          v-if="errors[0]"
-          class="invalid-feedback"
-          style="display: block;"
-        >
-          {{ errors[0] }}
-        </div>
-      </slot>
+      <div class="error-slot">
+        <slot name="error">
+          <div
+            v-if="errors[0]"
+            class="invalid-feedback"
+            style="display: block;"
+          >
+            {{ errors[0] }}
+          </div>
+        </slot>
+      </div>
     </div>
   </validation-provider>
 </template>
@@ -124,10 +126,10 @@ export default class AppInput extends Vue {
   get hasIcon (): boolean {
     const { append, prepend } = this.$slots
     return (
-      append !== undefined ||
-      prepend !== undefined ||
-      this.appendIcon !== undefined ||
-      this.prependIcon !== undefined ||
+      typeof append !== 'undefined' ||
+      typeof prepend !== 'undefined' ||
+      typeof this.appendIcon !== 'undefined' ||
+      typeof this.prependIcon !== 'undefined' ||
       this.group
     )
   }
@@ -154,11 +156,14 @@ export default class AppInput extends Vue {
   .input-group-append {
     position: relative;
   }
+  .error-slot {
+    height: 15px;
+  }
   .invalid-feedback {
     font-size: 10px;
     margin-left: 15px;
     margin-top: 5px;
     margin-bottom: 5px;
-    height: 15px;
+    color: red;
   }
 </style>

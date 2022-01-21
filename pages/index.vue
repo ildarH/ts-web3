@@ -11,7 +11,10 @@
       :is-tokens-loading="isTokensLoading"
       @onSelect="selectCard"
     />
-    <BaseForm v-if="isConnected && isDefaultChainId" />
+    <BaseForm
+      v-if="isConnected && isDefaultChainId"
+      :token-address="tokenAddress"
+    />
     <Transactions v-if="isConnected && isDefaultChainId" />
   </main>
 </template>
@@ -43,6 +46,7 @@ const { ethereum } : { ethereum: any} = window
 export default class Index extends Vue {
   isTokensLoading = false
   selectedCard: IBalance | null = null
+  tokenAddress: string | null = null
 
   get isConnected (): boolean {
     return Web3Module.isConnected
@@ -88,13 +92,23 @@ export default class Index extends Vue {
 
   selectCard (index: any): void {
     this.selectedCard = TokensModule.tokens[index]
+    this.tokenAddress = TokensModule.tokens[index].token.address
   }
 
   @Watch('isConnected')
   async connectionChanged (newVal: boolean): Promise<void> {
-    if (newVal) {
+    if (newVal && this.isDefaultChainId) {
       this.isTokensLoading = true
-      await TokensModule.GetTokenData()
+      await TokensModule.TokensData()
+      this.isTokensLoading = false
+    }
+  }
+
+  @Watch('isDefaultChainId')
+  async chainChanged (newVal: boolean): Promise<void> {
+    if (newVal && this.isConnected) {
+      this.isTokensLoading = true
+      await TokensModule.TokensData()
       this.isTokensLoading = false
     }
   }

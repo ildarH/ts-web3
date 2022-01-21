@@ -38,3 +38,19 @@ extend('validAddress', {
     }
   }
 })
+
+extend('greaterThanZero', {
+  validate: value => value > 0
+})
+
+extend('maxDecimals', {
+  validate: (value, params) => {
+    const arr = value.toString().trim().split('.')
+    if (arr.length === 2) {
+      const { decimals } = <{decimals: string}> params
+      return +arr[1].length <= +decimals
+    }
+    return true
+  },
+  params: ['decimals']
+})

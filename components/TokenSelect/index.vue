@@ -54,6 +54,6 @@ export default class TokenSelect extends Vue {
   @include container
 }
 .selected {
-  border: 1px solid red;
+  border: 2px solid #15DCE4;
 }
 </style>

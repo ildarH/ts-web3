@@ -44,7 +44,7 @@ class Web3 extends VuexModule implements IWeb3State {
 
   @Mutation
   public [Mutations.WEB3_SET_NETWORK_NAME] (chainId: number): void {
-    this.networkName = NetworkName[chainId]
+    this.networkName = NetworkName[chainId] || 'none'
   }
 
   @Mutation

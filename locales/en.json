@@ -28,7 +28,9 @@
     "required": "The {_field_} is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
-    "validAddress": "The {_field_} must be correct address"
+    "validAddress": "The {_field_} must be correct address",
+    "maxDecimals": "The {_field_} decimals must be less than {decimals}",
+    "greaterThanZero": "The {_field_} field must be a positive value"
   },
   "header": {
     "languageSelector": {

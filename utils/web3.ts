@@ -3,8 +3,8 @@ import * as yup from 'yup'
 
 import BigNumber from 'bignumber.js'
 import Moralis from 'moralis'
-import MoralisTypes from 'moralis/types'
 
+import { InferType } from 'yup'
 import {
   ERC20TokenBalanceSchema,
   IERC20TokenBalance,
@@ -37,6 +37,11 @@ let chainId: string | number
 
 const _initMoralis = async (serverUrl: string, appId: string): Promise<void> => {
   await Moralis.start({ serverUrl, appId })
+}
+
+const _initMoralisWeb3Service = async (): Promise<void> => {
+  const web3Moralis = await Moralis.Web3.enableWeb3({ provider: 'metamask' })
+  console.log('web3Moralis: ', web3Moralis)
 }
 
 const _fetchContractData = async (web3: any, method: string, abi: Array<any>, address: string, params?: Array<any>): Promise<IResponse> => {
@@ -112,7 +117,7 @@ export const requestTokenBalances = async (networkName: string, walletAddress: s
 
     try {
       const options = {
-        chain: <MoralisTypes.RinkebyChain>networkName,
+        chain: <Moralis.RinkebyChain>networkName,
         address: walletAddress,
         to_block: blockNumber
       }
@@ -133,10 +138,86 @@ export const requestTokenBalances = async (networkName: string, walletAddress: s
   return error(404, 'missing args')
 }
 
-// balance: "8800000000000000003000"
-// decimals: "18"
-// logo: null
-// name: "CyberFi Token"
-// symbol: "CFi"
-// thumbnail: null
-// token_address: "0x4b107a23361770534bd1839171bbf4b0eb56485c"
+export const requestTokenAllowance = async (networkName: string, owner: string, spender: string, tokenAddress: string): Promise<IResponse> => {
+  if (networkName && owner && spender && tokenAddress) {
+    await _initMoralis(MORALIS_SERVER, MORALIS_API_KEY)
+    let allowanceRequest: { allowance: string }
+
+    try {
+      const options = {
+        chain: <Moralis.RinkebyChain>networkName,
+        owner_address: owner,
+        spender_address: spender,
+        address: tokenAddress
+      }
+      allowanceRequest = await Moralis.Web3API.token.getTokenAllowance(options)
+      await yup.object({
+        allowance: yup.string()
+      }).validate(allowanceRequest)
+    } catch (err: any) {
+      if (err.name === 'ValidationError') {
+        console.log('ValidationError: ', err)
+      }
+      return error(501, 'Request allowance')
+    }
+
+    return output(allowanceRequest.allowance)
+  }
+  return error(404, 'missing args')
+}
+
+export const requestApprove = async (recipientAddress: string, tokenAddress: string, decimals: string, amount: string): Promise<IResponse> => {
+  if (recipientAddress && tokenAddress && decimals && amount) {
+    await _initMoralis(MORALIS_SERVER, MORALIS_API_KEY)
+    await _initMoralisWeb3Service()
+    let receipt
+
+    try {
+      const options = {
+        contractAddress: tokenAddress,
+        functionName: 'approve',
+        abi: ERC20,
+        params: {
+          spender: recipientAddress,
+          amount: Moralis.Units.Token(amount, +(decimals || 18))
+        }
+      }
+
+      receipt = await Moralis.Web3.executeFunction(options)
+      console.log('receipt: ', receipt)
+      return output({ receipt })
+    } catch (err: any) {
+      if (err.name === 'ValidationError') {
+        console.log('ValidationError: ', err)
+      }
+      return error(501, 'Request allowance')
+    }
+  }
+  return error(404, 'missing args')
+}
+
+export const requestTransfer = async (recipientAddress: string, amount: string, decimals: string, tokenAddress: string): Promise<IResponse> => {
+  if (recipientAddress && amount && decimals && tokenAddress) {
+    try {
+      await _initMoralis(MORALIS_SERVER, MORALIS_API_KEY)
+      await _initMoralisWeb3Service()
+      // let receipt: Moralis.TransferResult
+      const options = {
+        type: <Moralis.TransferType>'erc20',
+        amount: Moralis.Units.Token(amount, +(decimals || 18)),
+        receiver: recipientAddress,
+        contractAddress: tokenAddress
+      }
+      const receipt = await Moralis.Web3.transfer(options)
+
+      console.log('receipt: ', receipt)
+      return output(receipt)
+    } catch (err: any) {
+      if (err.name === 'ValidationError') {
+        console.log('ValidationError: ', err)
+      }
+      return error(501, 'Request allowance')
+    }
+  }
+  return error(404, 'missing args')
+}
